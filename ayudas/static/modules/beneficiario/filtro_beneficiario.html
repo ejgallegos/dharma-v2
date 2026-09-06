@@ -1,0 +1,59 @@
+<!--DATA TABLE-->
+<link href="{url_static}vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+<link href="{url_static}vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+<!--DATA TABLE-->
+<div class="col-lg-12">
+    <ul class="breadcrumb">
+        <li><a href="{url_app}/usuario/{panel_general}"><i class="fa fa-home"></i> HOME</a></li>
+    </ul>
+</div>
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2><i class="fa fa-table"></i>&nbsp;&nbsp; Listado de beneficiarios</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <table id="tbl_beneficiario" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Beneficiario</th>
+                        <th>Documento</th>
+                        <th>Teléfono</th>
+                        <th>Beca</th>
+                        <th>Monto</th>
+                        <th>Localidad</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {tbl_beneficiario}
+                </tbody>
+            </table>
+            <form class="form" id="formulario_guardar" method="post" action="{url_app}/beneficiario/descargar_excel_beneficiario">
+                <div class="form-group col-lg-12" style="margin-top: 2%;" align="right">
+                    <input type="hidden" name="tipo_filtro" value="{tipo_filtro}">
+                    <input type="hidden" name="condicion" value="{condicion}">
+                    <button type="submit" class="btn btn-app"> <i class="fa fa-file-excel-o"></i> Descargar Excel </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Datatables -->
+<script src="{url_static}vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="{url_static}vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="{url_static}vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="{url_static}vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        $('#tbl_beneficiario').dataTable( {
+            "aaSorting": [[ 0, "asc" ]]
+          , "iDisplayLength":10
+        } );
+    } );
+</script>

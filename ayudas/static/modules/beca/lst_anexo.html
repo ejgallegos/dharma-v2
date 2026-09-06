@@ -1,0 +1,13 @@
+<!--LST_ANEXO-->
+<li>
+    <div class="block">
+        <div class="block_content">
+            <h2 class="title"><a>{anexo-denominacion}</a></h2>
+            <div class="byline"><span>${anexo-monto}</span></div>
+            <a href="#" onClick="modalConsultarAnexo({anexo-anexo_id});">Consultar</a>&nbsp;
+            <a href="#" onClick="modalEditarAnexo({anexo-anexo_id}, {beca-beca_id}, {plan-plan_id});" id="a_editar">Editar</a>&nbsp;
+            <button type="button" class="btn btn-danger btn-xs" onclick="confirma_formulario(4, '{url_app}/beca/eliminar_anexo/{anexo-anexo_id}@{beca-beca_id}@{plan-plan_id}');" title="Eliminar anexo"><i class="fa fa-trash-o"></i></button>
+        </div>
+    </div>
+</li>
+<!--LST_ANEXO-->

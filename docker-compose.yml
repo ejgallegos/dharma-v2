@@ -1,0 +1,60 @@
+services:
+  app:
+    ports:
+      - "${APP_HTTP_PORT:-8080}:80"
+    build:
+      context: ./ayudas
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      APP_TITLE: ${APP_TITLE:-${AYUDAS_TITLE:-Ayudas}}
+      APP_ABREV: ${APP_ABREV:-${AYUDAS_ABREV:-Ayudas}}
+      APP_DB_HOST: db
+      APP_DB_NAME: ${APP_DB_NAME:-${AYUDAS_DB_NAME:-municipiogfvarel_ayudas}}
+      APP_DB_USER: ${APP_DB_USER:-${AYUDAS_DB_USER:-municipiogfvarel_ayudas}}
+      APP_DB_PASS: ${APP_DB_PASSWORD:-${AYUDAS_DB_PASSWORD:?Defina APP_DB_PASSWORD en .env}}
+      APP_PRIVATE_DIR: /var/www/html/private/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${APP_INSTANCE:-ayudas}.rule=Host(`${APP_DOMAIN:-ayudas.municipiogfvarela.gob.ar}`)"
+      - "traefik.http.routers.${APP_INSTANCE:-ayudas}.tls=true"
+      - "traefik.http.routers.${APP_INSTANCE:-ayudas}.entrypoints=web,websecure"
+      - "traefik.http.routers.${APP_INSTANCE:-ayudas}.tls.certresolver=mytlschallenge"
+      - "traefik.http.services.${APP_INSTANCE:-ayudas}.loadbalancer.server.port=80"
+      - "traefik.docker.network=traefik-net"
+    volumes:
+      - ./ayudas:/var/www/html
+      - private_data:/var/www/html/private
+      - logs_data:/var/www/html/logs
+    networks:
+      - default
+      - traefik-net
+
+  db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${APP_DB_NAME:-${AYUDAS_DB_NAME:-municipiogfvarel_ayudas}}
+      MARIADB_USER: ${APP_DB_USER:-${AYUDAS_DB_USER:-municipiogfvarel_ayudas}}
+      MARIADB_PASSWORD: ${APP_DB_PASSWORD:-${AYUDAS_DB_PASSWORD:?Defina APP_DB_PASSWORD en .env}}
+      MARIADB_ROOT_PASSWORD: ${APP_DB_ROOT_PASSWORD:-${AYUDAS_DB_ROOT_PASSWORD:?Defina APP_DB_ROOT_PASSWORD en .env}}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./${APP_SQL_DUMP:-database/dumps/ayudas.sql}:/docker-entrypoint-initdb.d/01-database.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -uroot -p\"$${MARIADB_ROOT_PASSWORD}\" --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  db_data:
+  private_data:
+  logs_data:
+
+networks:
+  traefik-net:
+    external: true

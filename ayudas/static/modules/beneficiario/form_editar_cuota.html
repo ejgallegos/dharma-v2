@@ -1,0 +1,53 @@
+<div class=" form">
+    <form class="form" id="formulario_anexo" method="post" action="{url_app}/beneficiario/editar_pago">
+        <div class="form-group col-lg-12">
+            <div class="form-group col-lg-4" style="padding-left: 0px;">
+                <label>Año</label>
+                <input type="number" class="form-control" id="anio" name="anio" maxlength="4" value="{cuota-anio}" required>
+            </div>
+            <div class="form-group col-lg-8" style="padding-right: 0px;">
+                <label>Mes</label>
+                <select class="form-control" id="mes" name="mes">
+                    <option value="{cuota-mes}" selected>{cuota-mes_denominacion}</option>
+                    <option value="01">Enero</option>
+                    <option value="02">Febrero</option>
+                    <option value="03">Marzo</option>
+                    <option value="04">Abril</option>
+                    <option value="05">Mayo</option>
+                    <option value="06">Junio</option>
+                    <option value="07">Julio</option>
+                    <option value="08">Agosto</option>
+                    <option value="09">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-lg-6">
+            <label>Fecha</label>
+            <input type="date" class="form-control" id="fecha" name="fecha" value="{cuota-fecha}" required>
+        </div>
+        <div class="form-group col-lg-6">
+            <label>Cantidad</label>
+            <input type="number" class="form-control" id="cantidad" name="cantidad" value="{cuota-cantidad}" required>
+        </div>
+        <div class="form-group col-lg-6">
+            <label>Monto</label>
+            <input type="number" step=".01" class="form-control" name="monto" id="monto" value="{cuota-monto}" required>
+        </div>
+        <div class="form-group col-lg-6">
+            <label>Descuento</label>
+            <input type="number" step=".01" class="form-control" name="descuento" id="descuento" value="{cuota-descuento}" required>
+        </div>
+        <div class="form-group col-lg-12">
+            <label>Detalle</label>
+            <textarea class="form-control" name="detalle" id="detalle" rows="3">{cuota-detalle}</textarea>
+        </div>
+        <div class="form-group col-lg-12" style="margin-top: 2%;" align="right">
+            <input type="hidden" name="cuota_id" value="{cuota-cuota_id}">
+            <input type="hidden" name="beneficiario_id" value="{beneficiario-beneficiario_id}">
+            <button type="submit" class="btn btn-app"> <i class="fa fa-edit"></i> Editar pago </button>
+        </div>
+    </form>
+</div>

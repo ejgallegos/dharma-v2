@@ -1,0 +1,20 @@
+# Secretos locales
+.env
+
+# Dumps de producción: contienen datos personales y no deben publicarse
+/database/dumps/*.sql
+
+# Archivos de distribución o temporales
+/ayudas.zip
+/ayudas/depuracion.txt
+/ayudas/logs/*
+/ayudas/private/backup/bd/*
+deploy/instances/*.env
+!deploy/instances/*.env.example
+*.xls
+*.xlsx
+
+# Entorno local
+.atl/
+.DS_Store
+Thumbs.db

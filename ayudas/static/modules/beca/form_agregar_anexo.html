@@ -1,0 +1,33 @@
+<div class="x_panel">
+    <div class="x_title">
+        <h2><i class="fa fa-plus-square"></i>&nbsp;&nbsp; Agregar anexo</h2>
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <div class=" form">
+            <form class="form" id="formulario_anexo" method="post" action="{url_app}/beca/asociar_anexo">
+                <div class="form-group">
+                    <label>Denominación</label>
+                    <input type="text" class="form-control" id="denominacion" name="denominacion" required>
+                </div>
+                <div class="form-group">
+                    <label>Monto</label>
+                    <input type="number" step=".01" class="form-control" name="monto" id="monto" required>
+                </div>
+                <div class="form-group">
+                    <label>Detalle</label>
+                    <textarea class="form-control" name="detalle" id="detalle" rows="3"></textarea>
+                </div>
+                <div class="form-group col-lg-12" style="margin-top: 2%;" align="right">
+                    <input type="hidden" name="beca_id" value="{beca-beca_id}">
+                    <input type="hidden" name="plan" value="{plan-plan_id}">
+                    <button type="submit" class="btn btn-app"> <i class="fa fa-save"></i> Agregar </button>
+                </div>
+            </form>
+        </div>            
+    </div>
+</div>

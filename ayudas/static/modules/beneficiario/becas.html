@@ -1,0 +1,218 @@
+<script>
+    var flag_beneficio_activo = {flag_beneficio_activo};
+
+    function efectuarPago(beneficiario_id, beneficio_id) {
+        var efectuarPago = $.ajax({
+            url: '{url_app}/beneficiario/form_efectuar_pago/' + beneficiario_id + '@' + beneficio_id,
+                dataType: 'text',
+                async: false
+        }).responseText;
+        document.getElementById("modal_content").innerHTML = efectuarPago;
+        document.getElementById("myModalLabel").innerHTML = "Efectuar pago";
+        
+        $('#modal').modal('show');
+    }
+
+    function editarCuota(beneficiario_id, cuota_id) {
+        var editarCuota = $.ajax({
+            url: '{url_app}/beneficiario/form_editar_cuota/' + beneficiario_id + '@' + cuota_id,
+                dataType: 'text',
+                async: false
+        }).responseText;
+        document.getElementById("modal_content").innerHTML = editarCuota;
+        document.getElementById("myModalLabel").innerHTML = "Editar cuota";
+        
+        $('#modal').modal('show');
+    }
+
+    function consultarCuota(beneficio_id, cuota_id) {
+        var consultarCuota = $.ajax({
+            url: '{url_app}/beneficiario/consultar_cuota/' + beneficio_id + '@' + cuota_id,
+                dataType: 'text',
+                async: false
+        }).responseText;
+        document.getElementById("modal_content").innerHTML = consultarCuota;
+        document.getElementById("myModalLabel").innerHTML = "Consultar cuota";
+        
+        $('#modal').modal('show');
+    }
+
+    function imprimirCuota(beneficiario_id, beca_id, beneficio_id, cuota_id) {
+        var imprimirCuota = $.ajax({
+            url: '{url_app}/beneficiario/imprimir_cuota/' + beneficiario_id + '@' + beca_id + '@' + beneficio_id + '@' + cuota_id,
+                dataType: 'text',
+                async: false
+        }).responseText;
+        document.getElementById("content_imprimir_cuota").innerHTML = imprimirCuota;
+        window.print();
+    }
+
+    function verificaBeneficioActivo(beneficiario_id, beneficioactivo_id, beneficio_id) {
+        if (flag_beneficio_activo == 1) {
+            var btnConfirmar = document.getElementById('btn_confirmarCambio');
+            btnConfirmar.setAttribute("onClick", "confirmarCambio();");
+            document.getElementById('beneficiario_id').value = beneficiario_id;
+            document.getElementById('beneficioactivo_id').value = beneficioactivo_id;
+            document.getElementById('beneficio_id').value = beneficio_id;
+            document.getElementById('modal_content_beneficio_activo').style.display = 'block';
+            document.getElementById('modal_content_desactivar').style.display = 'none';
+            document.getElementById('modal_content_eliminar_beneficio').style.display = 'none';
+            $('#modalBeneficio').modal('show');
+        } else {
+            document.getElementById('beneficiario_id').value = beneficiario_id;
+            document.getElementById('beneficioactivo_id').value = beneficioactivo_id;
+            document.getElementById('beneficio_id').value = beneficio_id;
+            document.getElementById('formActivar').submit();    
+        }        
+    }
+
+    function confirmarCambio() {
+        document.getElementById('formActivar').submit();
+    }
+
+    function confirmaEliminarBeneficio(beneficiario_id, beneficio_id) {
+        var btnConfirmar = document.getElementById('btn_confirmarCambio');
+        btnConfirmar.setAttribute("onClick", "confirmarEliminar();");
+        document.getElementById('e_beneficiario_id').value = beneficiario_id;
+        document.getElementById('e_beneficio_id').value = beneficio_id;
+        document.getElementById('modal_content_beneficio_activo').style.display = 'none';
+        document.getElementById('modal_content_desactivar').style.display = 'none';
+        document.getElementById('modal_content_eliminar_beneficio').style.display = 'block';
+        $('#modalBeneficio').modal('show');
+    }
+
+    function confirmarEliminar() {
+        document.getElementById('formEliminar').submit();
+    }
+
+    function desactivarBeneficioActivo(beneficiario_id, beneficio_id) {
+        var btnConfirmar = document.getElementById('btn_confirmarCambio');
+        btnConfirmar.setAttribute("onClick", "confirmarDesactivar();");
+        document.getElementById('d_beneficiario_id').value = beneficiario_id;
+        document.getElementById('d_beneficio_id').value = beneficio_id;
+        document.getElementById('modal_content_beneficio_activo').style.display = 'none';
+        document.getElementById('modal_content_desactivar').style.display = 'block';
+        document.getElementById('modal_content_eliminar_beneficio').style.display = 'none';
+        $('#modalBeneficio').modal('show');      
+    }
+
+    function confirmarDesactivar() {
+        document.getElementById('formDesactivar').submit();
+    }
+</script>
+<div class="col-lg-12 hidden-print">
+    <ul class="breadcrumb">
+        <li><a href="{url_app}/usuario/{panel_general}"><i class="fa fa-home"></i> HOME</a></li>
+        <li><a href="{url_app}/{objeto}/{panel_objeto}">Panel Beneficiarios</a></li>
+    </ul>
+</div>
+<div class="col-md-12 col-sm-12 col-xs-12 hidden-print">
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="pricing">
+                <div class="title" style="height: 50px;"><h2>Beneficiario</h2></div>
+                <div class="x_content">
+                    <div class="">
+                        <div class="col-md-3 col-sm-3 col-xs-3 hidden-print">
+                            <div class="pricing_features" style="min-height: 100px; padding-bottom: 2%;">
+                                <ul class="list-unstyled text-left">
+                                    <li><i class="fa fa-check text-success"></i> <strong> Apellido:</strong>: {beneficiario-apellido}</li>
+                                    <li><i class="fa fa-check text-success"></i> <strong> Documento:</strong>: {beneficiario-documento}</li>
+                                    <li><i class="fa fa-check text-success"></i> <strong> Localidad:</strong>: {localidad-denominacion}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3 hidden-print">
+                            <div class="pricing_features" style="min-height: 100px; padding-bottom: 2%;">
+                                <ul class="list-unstyled text-left">
+                                    <li><i class="fa fa-check text-success"></i> <strong> Nombre:</strong>: {beneficiario-nombre}</li>
+                                    <li><i class="fa fa-check text-success"></i> <strong> CUIL / CUIT:</strong>: {beneficiario-cuil}</li>
+                                    <li><i class="fa fa-check text-success"></i> <strong> Domicilio:</strong>: {beneficiario-domicilio}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3 hidden-print">
+                            <div class="pricing_features" style="min-height: 100px; padding-bottom: 2%;">
+                                <ul class="list-unstyled text-left">
+                                    <li><i class="fa fa-check text-success"></i> <strong> Fecha de Nacimiento:</strong>: {beneficiario-fecha_nacimiento}</li>
+                                    <li><i class="fa fa-check text-success"></i> <strong> Teléfono:</strong>: {beneficiario-telefono}</li>
+                                    <li><i class="fa fa-check text-success"></i> <strong> Correo Electrónico:</strong>: {beneficiario-correoelectronico}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3 hidden-print" style="padding-right: 0px; {hidden-operador}">
+                            <button type="button" class="btn btn-app" onClick="location.href='{url_app}/beneficiario/agregar_beneficio/{beneficiario-beneficiario_id}'" style="float: right;"> <i class="fa fa-plus-square"></i> Agregar Beneficio </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-6 col-sm-6 col-xs-6 hidden-print">
+    {beneficio_activo}
+    {beneficio_collection_no_activos}
+</div>
+<div class="col-md-6 col-sm-6 col-xs-6 hidden-print">
+    {cuotas_beneficio_activo}
+</div>
+<div class="col-md-12 col-sm-12 col-xs-12 visible-print" id="content_imprimir_cuota" style="display: none"></div>
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header hidden-print">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body" id="modal_content"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default hidden-print" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="modalBeneficio">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel">Alerta!</h4>
+            </div>
+            <div class="modal-body" id="modal_content_beneficio_activo">
+                <div class="alert alert-info alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <strong>Ya existe un beneficio activo!</strong> Desea continuar y activar el beneficio seleccionado?
+                </div>
+                <form id="formActivar" method="post" action="{url_app}/beneficiario/activar_beneficio">
+                    <input type="hidden" name="beneficiario_id" id="beneficiario_id">
+                    <input type="hidden" name="beneficioactivo_id" id="beneficioactivo_id">
+                    <input type="hidden" name="beneficio_id" id="beneficio_id">
+                </form>
+            </div>
+            <div class="modal-body" id="modal_content_desactivar">
+                <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <strong>Está por desactivar el beneficio activo!</strong> ¿Está seguro que desea continuar?
+                </div>
+                <form id="formDesactivar" method="post" action="{url_app}/beneficiario/desactivar_beneficio">
+                    <input type="hidden" name="beneficiario_id" id="d_beneficiario_id">
+                    <input type="hidden" name="beneficio_id" id="d_beneficio_id">
+                </form>
+            </div>
+            <div class="modal-body" id="modal_content_eliminar_beneficio">
+                <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <strong>Está por eliminar todo el plan de beneficio!</strong> ¿Está seguro que desea continuar con el borrado de todo el plan de beneficio y sus cuotas?
+                </div>
+                <form id="formEliminar" method="post" action="{url_app}/beneficiario/eliminar_beneficio">
+                    <input type="hidden" name="beneficiario_id" id="e_beneficiario_id">
+                    <input type="hidden" name="beneficio_id" id="e_beneficio_id">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="btn_confirmarCambio">Confirmar</button>
+                <button type="button" class="btn btn-default hidden-print" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

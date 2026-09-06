@@ -1,0 +1,22 @@
+<div class=" form">
+    <form class="form" id="formulario_editar" method="post" action="{url_app}/beca/actualizar_anexo">
+        <div class="form-group">
+            <label>Denominación</label>
+            <input type="text" class="form-control" id="denominacion" name="denominacion" value="{anexo-denominacion}" required>
+        </div>
+        <div class="form-group">
+            <label>Monto</label>
+            <input type="number" step=".01" class="form-control" name="monto" id="monto" value="{anexo-monto}" required>
+        </div>
+        <div class="form-group">
+            <label>Detalle</label>
+            <textarea class="form-control" name="detalle" id="detalle" rows="5">{anexo-detalle}</textarea>
+        </div>
+        <div class="form-group col-lg-12" style="margin-top: 2%;" align="right">
+            <input type="hidden" name="anexo_id" value="{anexo-anexo_id}">
+            <input type="hidden" name="beca_id" id="beca_id">
+            <input type="hidden" name="plan" value="{plan-plan_id}">
+            <button type="sumbit" class="btn btn-app"> <i class="fa fa-edit"></i> Editar </button>
+        </div>
+    </form>
+</div>

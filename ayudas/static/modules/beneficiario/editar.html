@@ -1,0 +1,70 @@
+<div class="col-lg-12">
+    <ul class="breadcrumb">
+        <li><a href="{url_app}/usuario/{panel_general}"><i class="fa fa-home"></i> HOME</a></li>
+        <li><a href="{url_app}/{objeto}/{panel_objeto}">Panel Beneficiarios</a></li>
+    </ul>
+</div>
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2><i class="fa fa-edit"></i>&nbsp;&nbsp; Editar beneficiario</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class=" form">
+                <form class="form" id="formulario_guardar" method="post" action="{url_app}/beneficiario/guardar">
+                    <div class="form-group col-lg-6">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" value="{beneficiario-nombre}" required>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label>Apellido</label>
+                        <input type="text" class="form-control" name="apellido" id="apellido" value="{beneficiario-apellido}" required>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Número de Documento</label>
+                        <input type="text" class="form-control" id="documento" name="documento" value="{beneficiario-documento}" required>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>CUIL</label>
+                        <input type="text" class="form-control" id="cuil" name="cuil" value="{beneficiario-cuil}" required>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Fecha de Nacimiento</label>
+                        <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value="{beneficiario-fecha_nacimiento}" required>
+                    </div>
+                    <div class="form-group col-lg-8">
+                        <div class="form-group">
+                            <label>Localidad</label>
+                            <select class="form-control m-bot15" name="localidad" required>
+                                <option value="{localidad-localidad_id}" selected>{localidad-denominacion}</option>
+                                {slt_localidad}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Domicilio</label>
+                            <input type="text" class="form-control" id="domicilio" name="domicilio" value="{beneficiario-domicilio}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <input type="text" class="form-control" id="telefono" name="telefono" value="{beneficiario-telefono}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Correo Electrónico</label>
+                            <input type="text" class="form-control" id="correoelectronico" name="correoelectronico" value="{beneficiario-correoelectronico}" required>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4"></div>
+                    <div class="form-group col-lg-12" style="margin-top: 2%;" align="right">
+                        <input type="hidden" name="beneficiario_id" value="{beneficiario-beneficiario_id}">
+                        <a href="#" class="btn btn-app" onclick="confirma_formulario(2, '')"><i class="fa fa-edit"></i> Editar</a>
+                    </div>
+                </form>
+            </div>            
+        </div>
+    </div>
+</div>

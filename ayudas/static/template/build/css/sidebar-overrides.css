@@ -1,0 +1,21 @@
+/* Diferencia visual entre cada menú y sus submenús. */
+.nav.side-menu > li.submenu-entry > a {
+    margin-left: 0.5rem;
+    padding-left: 1.125rem;
+    border-left: 3px solid rgba(228, 233, 237, 0.45);
+    background-color: rgba(255, 255, 255, 0.035);
+}
+
+.nav.side-menu > li.submenu-entry > a:hover,
+.nav.side-menu > li.submenu-entry > a:focus {
+    border-left-color: #1ABB9C;
+    background-color: rgba(255, 255, 255, 0.09);
+}
+
+/* En modo compacto el tema muestra solo los íconos del sidebar. */
+.nav-sm .nav.side-menu > li.submenu-entry > a {
+    margin-left: 0;
+    padding-left: 5px;
+    border-left: 0;
+    background-color: transparent;
+}

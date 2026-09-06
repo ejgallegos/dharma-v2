@@ -1,0 +1,222 @@
+<div class="col-lg-12">
+    <ul class="breadcrumb">
+        <li><a href="{url_app}/usuario/{panel_general}"><i class="fa fa-home"></i> HOME</a></li>
+        <li><a href="{url_app}/{objeto}/listado">Panel Comprobantes</a></li>
+    </ul>
+</div>
+<div class="col-md-6 col-sm-6 col-xs-6">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2><i class="fa fa-edit-square"></i>&nbsp;&nbsp; Editar comprobante</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class=" form">
+                <form class="form" id="form_ingresar" method="post" action="{url_app}/comprobante/guardar">
+                    <div class="col-lg-12" style="padding-left: 0px; padding-right: 0px;">
+                        <label class="col-lg-12">Proveedor</label>
+                        <div class="form-group col-lg-5">
+                            <label>CUIL/CUIT</label>
+                            <div class="input-group">
+                                <input type="number" name="cuit" id="cuit" class="form-control" value="{proveedor-cuit}">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-primary" onclick="verificaProveedor();">Comprobar!</button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-7">
+                            <label>Razón Social</label>
+                            <input type="text" class="form-control" id="razon_social" value="{proveedor-denominacion}" readonly>
+                            <input type="hidden" name="proveedor" id="proveedor_id" value="{proveedor-proveedor_id}">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Punto de Venta</label>
+                        <input type="text" class="form-control" id="punto_venta" name="punto_venta" value="{comprobante-punto_venta}" required>
+                    </div>
+                    <div class="form-group col-lg-8">
+                        <label>Número</label>
+                        <input type="text" class="form-control" name="numero" id="numero" value="{comprobante-numero}" required>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label>Importe</label>
+                        <input type="text" class="form-control" id="importe" name="importe" value="{comprobante-importe}" required>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label>Fecha</label>
+                        <input type="date" class="form-control" id="fecha" name="fecha" value="{comprobante-fecha}" required>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label>Detalle</label>
+                        <textarea class="form-control" name="detalle" id="detalle" rows="5" required>{comprobante-detalle}</textarea>
+                    </div>
+                    <div class="form-group col-lg-12" style="margin-top: 2%;" align="right">
+                        <input type="hidden" name="comprobante_id" value="{comprobante-comprobante_id}">
+                        <a href="#" class="btn btn-app" onclick="verificarComprobante();"> <i class="fa fa-edit"></i> Editar </a>
+                    </div>
+                </form>
+            </div>            
+        </div>
+    </div>
+</div>
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="sistema_alertas">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel">ATENCIÓN! Sistema de Alertas!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <div class="col-lg-2">
+                        <center><h1><i class="fa fa-exclamation-triangle" style="color: #ff6c60;"></i></h1></center>
+                    </div>
+                    <div class="col-lg-10">
+                        <h5 id="msj_alerta_modal"></h5>
+                        <div class="col-lg-12" id="form_proveedor">
+                            <form method="post" class="form">
+                                <div class="form-group">
+                                    <label>Razón Social</label>
+                                    <input type="text" class="form-control" name="denominacion" id="prov_denominacion" placeholder="Ingresar Razón Social" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>CUIT</label>
+                                    <input type="text" class="form-control" name="cuit" id="prov_cuit" required>
+                                </div>
+                                <div class="form-group" style="margin-top: 2%;" align="right">
+                                    <a href="#" class="btn btn-app" onclick="agregarProveedor();"> <i class="fa fa-save"></i> Agregar </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function verificaProveedor() {
+        var form_proveedor = document.getElementById("form_proveedor");
+        var cuit = document.getElementById("cuit").value;
+        var verifica_proveedor = $.ajax({
+            url: '{url_app}/proveedor/verifica_proveedor/' + cuit,
+                dataType: 'text',
+                async: false
+        }).responseText;
+
+        if (verifica_proveedor == 0) {
+            $('#sistema_alertas').modal('show');
+            document.getElementById("msj_alerta_modal").innerHTML = "<strong>[ERROR]</strong> No se reconoce el número de CUIT del proveedor ingresado. Corrija el número para continuar o en caso de ser un nuevo proveedor por favor incorpórelo al sistema.";
+            document.getElementById("prov_cuit").value = cuit;
+            form_proveedor.style.display = "block";    
+        } else {
+            form_proveedor.style.display = "none";    
+            var array = verifica_proveedor.split("_");
+            console.log(array[0]);
+            document.getElementById("proveedor_id").value = parseInt(array[0]);
+            document.getElementById("razon_social").value = array[1];
+            $('#sistema_alertas').modal('hide');
+        }
+    }
+
+    function agregarProveedor() {
+        var denominacion = document.getElementById("prov_denominacion").value;
+        var cuit = document.getElementById("prov_cuit").value;
+        var dataString = 'denominacion=' + denominacion + '&cuit=' + cuit;
+        $.ajax({
+            type: "POST",
+            url: "{url_app}/proveedor/guardar_ajax",
+            data: dataString,
+            success: function() {
+                cargarProveedor(cuit);
+            }
+        });
+    }
+
+    function cargarProveedor(cuit) {
+        var trae_proveedor = $.ajax({
+            url: '{url_app}/proveedor/verifica_proveedor/' + cuit,
+                dataType: 'text',
+                async: false
+        }).responseText;
+
+        var array = trae_proveedor.split("_");
+        document.getElementById("cuit").value = cuit;
+        document.getElementById("proveedor_id").value = parseInt(array[0]);
+        document.getElementById("razon_social").value = array[1];
+        document.getElementById("form_proveedor").style.display = "none";
+        $('#sistema_alertas').modal('hide');
+    }
+
+    function verificarComprobante() {
+        document.getElementById("form_proveedor").style.display = "none";
+        var array = new Array();
+        var flag_array = 0;
+        
+        var proveedor_id = {proveedor-proveedor_id};
+        var prov_id = document.getElementById("proveedor_id").value;
+        if (prov_id == null || prov_id.length == 0 || prov_id == "") {
+            flag_array = 1;
+            array.push("<strong>[ERROR]</strong> Por favor complete el número de CUIT con uno correspondiente a un Proveedor cargado en el sistema.");
+        }
+
+        var punto_venta = {comprobante-punto_venta};
+        var ptov = document.getElementById("punto_venta").value;
+        if (ptov == null || ptov.length == 0 || ptov == "") {
+            flag_array = 1;
+            array.push("<strong>[ERROR]</strong> Por favor complete el punto de venta.");
+        }
+        
+        var numero = {comprobante-numero};
+        var numf = document.getElementById("numero").value;
+        if (numf == null || numf.length == 0 || numf == "") {
+            flag_array = 1;
+            array.push("<strong>[ERROR]</strong> Por favor complete el número de comprobante.");
+        }
+
+        var tmp_importe = document.getElementById("importe").value;
+        if (tmp_importe == null || tmp_importe.length == 0 || tmp_importe == "") {
+            flag_array = 1;
+            array.push("<strong>[ERROR]</strong> Por favor complete el importe del comprobante.");
+        }
+
+        var tmp_fecha = document.getElementById("fecha").value;
+        if (tmp_fecha == null || tmp_fecha.length == 0 || tmp_fecha == "") {
+            flag_array = 1;
+            array.push("<strong>[ERROR]</strong> Por favor complete la fecha del comprobante.");
+        }
+
+        if (flag_array == 0) {
+            if (prov_id == proveedor_id && ptov == punto_venta && numf == numero) {
+                document.getElementById("form_ingresar").submit();
+            } else {
+                
+                var cadena_comprobacion = prov_id + "@" + ptov + "@" + numf;
+                var flag = $.ajax({
+                    url: '{url_app}/comprobante/verifica_comprobante/' + cadena_comprobacion,
+                        dataType: 'text',
+                        async: false
+                }).responseText;
+                
+                if (flag > 0) {
+                    $('#sistema_alertas').modal('show');
+                    document.getElementById("msj_alerta_modal").innerHTML = "<strong>[ERROR]</strong> El comprobante ya se encuentra cargado en el sistema. Por favor comuníquese con el administrador para resolver la duplicidad del mismo.";
+                } else {
+                    document.getElementById("form_ingresar").submit();
+                }
+            }
+        } else {
+            var mensaje = array.join("<br><br>");
+            $('#sistema_alertas').modal('show');
+            document.getElementById("msj_alerta_modal").innerHTML = mensaje;
+        }
+    }
+</script>

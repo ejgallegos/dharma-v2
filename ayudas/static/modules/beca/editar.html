@@ -1,0 +1,140 @@
+<script>
+    function modalEditarAnexo(anexo_id, beca_id, plan_id) {
+        var formEditarAnexo = $.ajax({
+            url: '{url_app}/beca/form_editar_anexo/' + anexo_id + "@" + plan_id,
+                dataType: 'text',
+                async: false
+        }).responseText;
+        document.getElementById("modal_content").innerHTML = formEditarAnexo;
+        document.getElementById("myModalLabel").innerHTML = "Editar Anexo";
+        document.getElementById("beca_id").value = beca_id;
+
+        $('#modal').modal('show');
+    }
+</script>
+
+<script>
+    function modalConsultarAnexo(anexo_id) {
+        var consultarAnexo = $.ajax({
+            url: '{url_app}/beca/consultar_anexo/' + anexo_id,
+                dataType: 'text',
+                async: false
+        }).responseText;
+        document.getElementById("modal_content").innerHTML = consultarAnexo;
+        document.getElementById("myModalLabel").innerHTML = "Consultar Anexo";
+        
+        $('#modal').modal('show');
+    }
+</script>
+<div class="col-lg-12">
+    <ul class="breadcrumb">
+        <li><a href="{url_app}/usuario/{panel_general}"><i class="fa fa-home"></i> HOME</a></li>
+        <li><a href="{url_app}/plan/panel">Panel Becas</a></li>
+    </ul>
+</div>
+<div class="col-md-5 col-sm-5 col-xs-5">
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="pricing">
+                <div class="title" style="height: 50px;"><h2>{plan-denominacion}</h2></div>
+                <div class="x_content">
+                    <div class="">    
+                        <div class="pricing_features" style="min-height: 100px; padding-bottom: 2%;">
+                            <ul class="list-unstyled text-left">
+                                <li><i class="fa fa-check text-success"></i> <strong> Fecha:</strong> {plan-fecha}</li>
+                                <li><i class="fa fa-check text-success"></i> <strong> Detalle:</strong> {plan-detalle}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="x_panel">
+        <div class="x_title">
+            <h2><i class="fa fa-edit"></i>&nbsp;&nbsp; Editar resolución</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class=" form">
+                <form class="form" id="formulario_guardar" method="post" action="{url_app}/beca/guardar">
+                    <div class="form-group">
+                        <label>Denominación</label>
+                        <input type="text" class="form-control" id="denominacion" name="denominacion" value="{beca-denominacion}" required>
+                    </div>
+                    <div class="form-group  col-lg-6" style="padding-left: 0px;">
+                        <label>Resolución</label>
+                        <input type="text" class="form-control" name="resolucion" id="resolucion" value="{beca-resolucion}" required>
+                    </div>
+                    <div class="form-group  col-lg-6" style="padding-right: 0px;">
+                        <label>Fecha</label>
+                        <input type="date" class="form-control" id="fecha" name="fecha" value="{beca-fecha}" required>
+                    </div>
+                    <div class="form-group  col-lg-6" style="padding-left: 0px;">
+                        <label>Localidad</label>
+                        <select class="form-control m-bot15" name="localidad" required>
+                            <option value="{localidad-localidad_id}">{localidad-denominacion}</option>
+                            {slt_localidad}
+                        </select>
+                    </div>
+                    <div class="form-group  col-lg-6" style="padding-right: 0px;">
+                        <label>Tipo Beca</label>
+                        <select class="form-control m-bot15" name="tipobeca" required>
+                            <option value="{tipobeca-tipobeca_id}">{tipobeca-denominacion}</option>
+                            {slt_tipobeca}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Detalle</label>
+                        <textarea class="form-control" name="detalle" id="detalle" rows="5">{beca-detalle}</textarea>
+                    </div>
+                    <div class="form-group col-lg-12" style="margin-top: 2%;" align="right">
+                        <input type="hidden" name="beca_id" value="{beca-beca_id}">
+                        <input type="hidden" name="plan" value="{plan-plan_id}">
+                        <a href="#" class="btn btn-app" onclick="confirma_formulario(2, '')"> <i class="fa fa-edit"></i> Editar </a>
+                    </div>
+                </form>
+            </div>            
+        </div>
+    </div>
+</div>
+<div class="col-md-4 col-sm-4 col-xs-4">
+    {form_anexo}
+</div>
+<div class="col-md-3 col-sm-3 col-xs-3">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Anexos</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class="dashboard-widget-content">
+                <ul class="list-unstyled timeline widget">
+                    {lst_anexo}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body" id="modal_content"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
