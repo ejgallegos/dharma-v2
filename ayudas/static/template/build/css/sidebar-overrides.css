@@ -19,3 +19,10 @@
     border-left: 0;
     background-color: transparent;
 }
+
+/* Los importes del resumen deben entrar completos en tarjetas angostas. */
+.tile_count .tile_stats_count .count.money {
+    font-size: clamp(1.25rem, 2.5vw, 2rem);
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+}
