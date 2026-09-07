@@ -65,24 +65,27 @@ class PlanController {
 		
 		$localidad_collection = Collector()->get('Localidad');
 
-		$select_pago_total = "IFNULL(SUM(c.monto - c.descuento), 0) AS PAGO_TOTAL";
-		$from_pago_total = "cuota c INNER JOIN cuotabeneficio cb ON c.cuota_id = cb.compositor INNER JOIN beneficio be ON cb.compuesto = be.beneficio_id INNER JOIN
-							beneficiobeneficiario bb ON be.beneficio_id = bb.compositor INNER JOIN beneficiario b ON bb.compuesto = b.beneficiario_id INNER JOIN anexo a ON be.anexo = a.anexo_id INNER JOIN
+		$select_pago_total = "IFNULL(SUM(a.monto), 0) AS PAGO_TOTAL";
+		$from_pago_total = "beneficiario b INNER JOIN beneficiobeneficiario bb ON b.beneficiario_id = bb.compuesto INNER JOIN
+							beneficio be ON bb.compositor = be.beneficio_id INNER JOIN anexo a ON be.anexo = a.anexo_id INNER JOIN
 							anexobeca ab ON a.anexo_id = ab.compositor INNER JOIN beca bc ON ab.compuesto = bc.beca_id INNER JOIN 
 							plan p ON bc.plan = p.plan_id INNER JOIN localidad l ON bc.localidad = l.localidad_id";
 		$where_pago_total = "p.conf_panel = 1 AND be.estado = 1";
 		$sum_pago_total = CollectorCondition()->get('Cuota', $where_pago_total, 4, $from_pago_total, $select_pago_total);
 
 	    	$select_pago_periodo = "IFNULL(SUM(c.monto - c.descuento), 0) AS PAGO_PERIODO";
-    	$from_pago_periodo = "cuota c INNER JOIN cuotabeneficio cb ON c.cuota_id = cb.compositor INNER JOIN beneficio b ON cb.compuesto = b.beneficio_id INNER JOIN 
-    			 beneficiobeneficiario bb ON b.beneficio_id = bb.compositor INNER JOIN beneficiario bf ON bb.compuesto = bf.beneficiario_id INNER JOIN 
-    			 anexo a ON b.anexo = anexo_id INNER JOIN anexobeca ab ON a.anexo_id = ab.compositor INNER JOIN beca bc ON ab.compuesto = bc.beca_id INNER JOIN 
-    			 localidad l ON bc.localidad = l.localidad_id INNER JOIN plan p ON bc.plan = p.plan_id";
+	    	$from_pago_periodo = "cuota c INNER JOIN cuotabeneficio cb ON c.cuota_id = cb.compositor INNER JOIN beneficio b ON cb.compuesto = b.beneficio_id INNER JOIN 
+	    				 anexo a ON b.anexo = anexo_id INNER JOIN anexobeca ab ON a.anexo_id = ab.compositor INNER JOIN beca bc ON ab.compuesto = bc.beca_id INNER JOIN 
+	    				 localidad l ON bc.localidad = l.localidad_id INNER JOIN plan p ON bc.plan = p.plan_id";
+		$from_cantidad_pagos = "cuota c INNER JOIN cuotabeneficio cb ON c.cuota_id = cb.compositor INNER JOIN beneficio b ON cb.compuesto = b.beneficio_id INNER JOIN
+							beneficiobeneficiario bb ON b.beneficio_id = bb.compositor INNER JOIN beneficiario bf ON bb.compuesto = bf.beneficiario_id INNER JOIN
+							anexo a ON b.anexo = a.anexo_id INNER JOIN anexobeca ab ON a.anexo_id = ab.compositor INNER JOIN beca bc ON ab.compuesto = bc.beca_id INNER JOIN
+							localidad l ON bc.localidad = l.localidad_id INNER JOIN plan p ON bc.plan = p.plan_id";
 		$where_pago_periodo = "c.periodo = {$periodo} AND p.conf_panel = 1 AND b.estado = 1";
 		$sum_pago_periodo = CollectorCondition()->get('Cuota', $where_pago_periodo, 4, $from_pago_periodo, $select_pago_periodo);
 
 		$select_cantidad_pagos = "COUNT(DISTINCT bf.beneficiario_id) AS CANTIDAD_PAGOS";
-		$cantidad_pagos = CollectorCondition()->get('Cuota', $where_pago_periodo, 4, $from_pago_periodo, $select_cantidad_pagos);
+		$cantidad_pagos = CollectorCondition()->get('Cuota', $where_pago_periodo, 4, $from_cantidad_pagos, $select_cantidad_pagos);
 
 		$dict_pagos = array("{periodo}"=>$periodo,
 							"{pago-total}"=>$sum_pago_total[0]["PAGO_TOTAL"],
@@ -94,7 +97,7 @@ class PlanController {
 												(SELECT IFNULL(SUM(sc.monto - sc.descuento), 0) FROM cuota sc INNER JOIN cuotabeneficio scb ON sc.cuota_id = scb.compositor INNER JOIN
 											beneficio sb ON scb.compuesto = sb.beneficio_id INNER JOIN anexo sa ON sb.anexo = sa.anexo_id INNER JOIN
 											anexobeca sab ON sa.anexo_id = sab.compositor INNER JOIN beca sbc ON sab.compuesto = sbc.beca_id INNER JOIN 
-												localidad sl ON sbc.localidad = sl.localidad_id WHERE sb.estado = 1 AND sc.periodo = {$periodo} AND sl.localidad_id = l.localidad_id
+												localidad sl ON sbc.localidad = sl.localidad_id INNER JOIN plan sp ON sbc.plan = sp.plan_id WHERE sb.estado = 1 AND sp.conf_panel = 1 AND sc.periodo = {$periodo} AND sl.localidad_id = l.localidad_id
 											GROUP BY sl.localidad_id) AS PAGO";
     	$from_cant_beneficio_localidad = "beneficio b INNER JOIN anexo a ON b.anexo = a.anexo_id INNER JOIN anexobeca ab ON a.anexo_id = ab.compositor INNER JOIN
     									  beca bc ON ab.compuesto = bc.beca_id INNER JOIN localidad l ON bc.localidad = l.localidad_id INNER JOIN 
