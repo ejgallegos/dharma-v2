@@ -106,6 +106,42 @@ function verificarDocumento() {
         array.push("<strong>[ERROR]</strong> Por favor complete el APELLIDO del beneficiario.");
     }
 
+    var cuil = document.getElementById("cuil").value;
+    if (cuil == null || cuil.length == 0 || cuil == "") {
+        flag_array = 1;
+        array.push("<strong>[ERROR]</strong> Por favor complete el CUIL del beneficiario.");
+    }
+
+    var fechaNacimiento = document.getElementById("fecha_nacimiento").value;
+    if (fechaNacimiento == null || fechaNacimiento.length == 0 || fechaNacimiento == "") {
+        flag_array = 1;
+        array.push("<strong>[ERROR]</strong> Por favor complete la FECHA DE NACIMIENTO.");
+    }
+
+    var localidad = document.querySelector("select[name='localidad']").value;
+    if (localidad == null || localidad.length == 0 || localidad == "") {
+        flag_array = 1;
+        array.push("<strong>[ERROR]</strong> Por favor seleccione una LOCALIDAD.");
+    }
+
+    var domicilio = document.getElementById("domicilio").value;
+    if (domicilio == null || domicilio.length == 0 || domicilio == "") {
+        flag_array = 1;
+        array.push("<strong>[ERROR]</strong> Por favor complete el DOMICILIO.");
+    }
+
+    var telefono = document.getElementById("telefono").value;
+    if (telefono == null || telefono.length == 0 || telefono == "") {
+        flag_array = 1;
+        array.push("<strong>[ERROR]</strong> Por favor complete el TELÉFONO.");
+    }
+
+    var correo = document.getElementById("correoelectronico").value;
+    if (correo == null || correo.length == 0 || correo == "") {
+        flag_array = 1;
+        array.push("<strong>[ERROR]</strong> Por favor complete el CORREO ELECTRÓNICO.");
+    }
+
     var documento = document.getElementById("documento").value;
     if (documento == null || documento.length == 0 || documento == "") {
         flag_array = 1;

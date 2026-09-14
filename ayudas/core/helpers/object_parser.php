@@ -58,6 +58,15 @@ class ObjectParser {
             )) && $valor === '') {
                 $valor = NULL;
             }
+
+            // MariaDB en modo estricto no acepta cadenas vacías en campos
+            // numéricos opcionales. NULL representa correctamente el valor
+            // ausente y evita errores durante altas y ediciones.
+            if (in_array($campos[$indice], array(
+                'documento', 'cuil', 'telefono', 'localidad'
+            )) && $valor === '') {
+                $valor = NULL;
+            }
         }
         array_shift($data);
         return $data;
