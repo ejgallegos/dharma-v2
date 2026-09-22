@@ -27,21 +27,21 @@
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Número de Documento</label>    
-                        <input type="number" name="documento" id="documento" class="form-control">                        
+                        <input type="number" name="documento" id="documento" class="form-control" required>
                     </div>
                     <div class="form-group col-lg-4">
                         <label>CUIL</label>
-                        <input type="text" class="form-control" id="cuil" name="cuil" required>
+                        <input type="text" class="form-control" id="cuil" name="cuil">
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Fecha de Nacimiento</label>
-                        <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
+                        <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento">
                     </div>
                     
                     <div class="form-group col-lg-8">
                         <div class="form-group">
                             <label>Localidad</label>
-                            <select class="form-control m-bot15" name="localidad" required>
+                            <select class="form-control m-bot15" name="localidad">
                                 {slt_localidad}
                             </select>
                         </div>
@@ -51,11 +51,11 @@
                         </div>
                         <div class="form-group">
                             <label>Teléfono</label>
-                            <input type="text" class="form-control" id="telefono" name="telefono" required>
+                        <input type="text" class="form-control" id="telefono" name="telefono">
                         </div>
                         <div class="form-group">
                             <label>Correo Electrónico</label>
-                            <input type="text" class="form-control" id="correoelectronico" name="correoelectronico" required>
+                        <input type="text" class="form-control" id="correoelectronico" name="correoelectronico">
                         </div>
                     </div>
                     <div class="form-group col-lg-4"></div>
@@ -106,40 +106,10 @@ function verificarDocumento() {
         array.push("<strong>[ERROR]</strong> Por favor complete el APELLIDO del beneficiario.");
     }
 
-    var cuil = document.getElementById("cuil").value;
-    if (cuil == null || cuil.length == 0 || cuil == "") {
-        flag_array = 1;
-        array.push("<strong>[ERROR]</strong> Por favor complete el CUIL del beneficiario.");
-    }
-
-    var fechaNacimiento = document.getElementById("fecha_nacimiento").value;
-    if (fechaNacimiento == null || fechaNacimiento.length == 0 || fechaNacimiento == "") {
-        flag_array = 1;
-        array.push("<strong>[ERROR]</strong> Por favor complete la FECHA DE NACIMIENTO.");
-    }
-
-    var localidad = document.querySelector("select[name='localidad']").value;
-    if (localidad == null || localidad.length == 0 || localidad == "") {
-        flag_array = 1;
-        array.push("<strong>[ERROR]</strong> Por favor seleccione una LOCALIDAD.");
-    }
-
     var domicilio = document.getElementById("domicilio").value;
     if (domicilio == null || domicilio.length == 0 || domicilio == "") {
         flag_array = 1;
         array.push("<strong>[ERROR]</strong> Por favor complete el DOMICILIO.");
-    }
-
-    var telefono = document.getElementById("telefono").value;
-    if (telefono == null || telefono.length == 0 || telefono == "") {
-        flag_array = 1;
-        array.push("<strong>[ERROR]</strong> Por favor complete el TELÉFONO.");
-    }
-
-    var correo = document.getElementById("correoelectronico").value;
-    if (correo == null || correo.length == 0 || correo == "") {
-        flag_array = 1;
-        array.push("<strong>[ERROR]</strong> Por favor complete el CORREO ELECTRÓNICO.");
     }
 
     var documento = document.getElementById("documento").value;
