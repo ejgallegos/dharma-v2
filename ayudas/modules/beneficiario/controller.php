@@ -59,9 +59,23 @@ class BeneficiarioController {
 		$from_beca = "anexo a INNER JOIN anexobeca ab ON a.anexo_id = ab.compositor INNER JOIN beca bc ON ab.compuesto = bc.beca_id
 					  INNER JOIN tipobeca tb ON bc.tipobeca = tb.tipobeca_id";
 		foreach ($beneficio_collection as $clave => $valor) {
+			$valor->beca_id = 0;
+			$valor->beca = 'Sin beca asociada';
+			$valor->resolucion = '-';
+			$valor->tipobeca = '-';
+
+			if (!is_object($valor->anexo) || empty($valor->anexo->anexo_id)) {
+				$valor->anexo = new Anexo();
+				continue;
+			}
+
 			$anexo_id = $valor->anexo->anexo_id;
 			$where_beca = "a.anexo_id = {$anexo_id}";
 			$beca = CollectorCondition()->get('Beca', $where_beca, 4, $from_beca, $select_beca);
+			if (empty($beca)) {
+				continue;
+			}
+
 			$valor->beca_id = $beca[0]['BECA_ID'];
 			$valor->beca = $beca[0]['BECA'];
 			$valor->resolucion = $beca[0]['RESOLUCION'];
