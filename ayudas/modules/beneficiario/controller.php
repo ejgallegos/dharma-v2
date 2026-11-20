@@ -14,6 +14,11 @@ class BeneficiarioController {
 		$this->view = new BeneficiarioView();
 	}
 
+	function panel() {
+		SessionHandler()->check_session();
+		header("Location: " . URL_APP . "/beneficiario/listado");
+	}
+
 	function listado() {
     	SessionHandler()->check_session();
 		
