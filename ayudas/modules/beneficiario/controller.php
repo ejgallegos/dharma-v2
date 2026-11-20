@@ -357,24 +357,51 @@ class BeneficiarioController {
 	}
 
 	function eliminar_beneficio() {
-		$beneficiario_id = filter_input(INPUT_POST, 'beneficiario_id');
-		$beneficio_id = filter_input(INPUT_POST, 'beneficio_id');
+		SessionHandler()->check_session();
 
-		$select = "cb.compositor AS CUOTA_ID";
-		$from = "cuotabeneficio cb";
-		$where = "cb.compuesto = {$beneficio_id}";
-		$cuota_collection = CollectorCondition()->get('Beneficio', $where, 4, $from, $select);
-
-		foreach ($cuota_collection as $clave=>$valor) {
-			$cm = new Cuota();
-			$cm->cuota_id = $valor["CUOTA_ID"];
-			$cm->delete();
+		$beneficiario_id = filter_input(INPUT_POST, 'beneficiario_id', FILTER_VALIDATE_INT);
+		$beneficio_id = filter_input(INPUT_POST, 'beneficio_id', FILTER_VALIDATE_INT);
+		if (!$beneficiario_id || !$beneficio_id) {
+			set_app_message("No se pudo identificar el beneficio a eliminar.");
+			header("Location: " . URL_APP . "/beneficiario/listado");
+			return;
 		}
-		
-		$bm = new Beneficio();
-		$bm->beneficio_id = $beneficio_id;
-		$bm->delete();
 
+		$sql = "SELECT COUNT(*) AS TOTAL FROM beneficiobeneficiario WHERE compuesto = ? AND compositor = ?";
+		$relacion = execute_query($sql, array($beneficiario_id, $beneficio_id));
+		if (empty($relacion) || (int)$relacion[0]['TOTAL'] === 0) {
+			set_app_message("El beneficio seleccionado ya no está asociado al beneficiario.");
+			header("Location: " . URL_APP . "/beneficiario/becas/{$beneficiario_id}");
+			return;
+		}
+
+		$sql = "SELECT COUNT(*) AS TOTAL FROM beneficiobeneficiario WHERE compositor = ?";
+		$relaciones_beneficio = execute_query($sql, array($beneficio_id));
+		$beneficio_compartido = ((int)$relaciones_beneficio[0]['TOTAL'] > 1);
+
+		if (!$beneficio_compartido) {
+			$select = "cb.compositor AS CUOTA_ID";
+			$from = "cuotabeneficio cb";
+			$where = "cb.compuesto = {$beneficio_id}";
+			$cuota_collection = CollectorCondition()->get('Beneficio', $where, 4, $from, $select);
+
+			foreach ($cuota_collection as $clave=>$valor) {
+				$cm = new Cuota();
+				$cm->cuota_id = $valor["CUOTA_ID"];
+				$cm->delete();
+			}
+		}
+
+		$sql = "DELETE FROM beneficiobeneficiario WHERE compuesto = ? AND compositor = ?";
+		execute_query($sql, array($beneficiario_id, $beneficio_id));
+
+		if (!$beneficio_compartido) {
+			$bm = new Beneficio();
+			$bm->beneficio_id = $beneficio_id;
+			$bm->delete();
+		}
+
+		set_app_message("El beneficio asociado fue eliminado.");
 		header("Location: " . URL_APP . "/beneficiario/becas/{$beneficiario_id}");
 	}
 
