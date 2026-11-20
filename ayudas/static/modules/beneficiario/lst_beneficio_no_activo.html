@@ -22,8 +22,9 @@
             <li><i class="fa fa-bars"></i><a href="#">Fecha de Alta:</a> {beneficio-fecha_alta}</li>
             <li style="{hidden-operador}">
               <button type="button" class="btn btn-success btn-xs" onClick="verificaBeneficioActivo({beneficiario-beneficiario_id},{beneficioactivo_id},{beneficio-beneficio_id});"><i class="fa fa-arrow-up" style="color: #FFF;"></i> ACTIVAR</button>
-              &nbsp;&nbsp;
-              <button type="button" class="btn btn-danger btn-xs" onClick="confirmaEliminarBeneficio({beneficiario-beneficiario_id},{beneficio-beneficio_id});"><i class="fa fa-trash-o" style="color: #FFF;"></i> ELIMINAR</button>
+            </li>
+            <li style="{hidden-operador}">
+              <button type="button" class="btn btn-danger btn-xs" title="Eliminar beneficio asociado" onClick="confirmaEliminarBeneficio({beneficiario-beneficiario_id},{beneficio-beneficio_id});"><i class="fa fa-trash-o" style="color: #FFF;"></i> ELIMINAR BENEFICIO</button>
             </li>
           </ul>
         </div>
